@@ -68,56 +68,58 @@ public class InvertImageView extends ActionBarActivity implements ImageView.OnCl
     @Override
     public void onClick(View v) {
 
-        if(v.getId()==R.id.saveImage){
+        if (v.getId() == R.id.saveImage) {
             getImageName.setVisibility(View.VISIBLE);
             submitImageNameBtn.setVisibility(View.VISIBLE);
             cancelImageNameBtn.setVisibility(View.VISIBLE);
         }
 
-        if(v.getId()==R.id.cancelImageNameBtn){
+        if (v.getId() == R.id.cancelImageNameBtn) {
             getImageName.setVisibility(View.GONE);
             submitImageNameBtn.setVisibility(View.GONE);
             cancelImageNameBtn.setVisibility(View.GONE);
             getImageName.setText("");
         }
 
-        if(v.getId()==R.id.submitImageNameBtn && !getImageName.getText().toString().matches("")){
-           // Date date= new Date();
-           // String imageName= "img"+Long.toString(date.getTime())+".bmp";
-            String imageName= getImageName.getText().toString();
-            String iconsStoragePath = Environment.getExternalStorageDirectory() + "/myAppDir/myImages/";
-            File sdIconStorageDir = new File(iconsStoragePath);
+        if (v.getId() == R.id.submitImageNameBtn) {
+            if (!getImageName.getText().toString().matches("")) {
+                // Date date= new Date();
+                // String imageName= "img"+Long.toString(date.getTime())+".bmp";
+                String imageName = getImageName.getText().toString();
+                String iconsStoragePath = Environment.getExternalStorageDirectory() + "/myAppDir/myImages/";
+                File sdIconStorageDir = new File(iconsStoragePath);
 
-            //create storage directories, if they don't exist
-            sdIconStorageDir.mkdirs();
+                //create storage directories, if they don't exist
+                sdIconStorageDir.mkdirs();
 
-            try {
-                String filePath = sdIconStorageDir.toString()+"/" + imageName+".bmp";
-                FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+                try {
+                    String filePath = sdIconStorageDir.toString() + "/" + imageName + ".bmp";
+                    FileOutputStream fileOutputStream = new FileOutputStream(filePath);
 
-                BufferedOutputStream bos = new BufferedOutputStream(fileOutputStream);
+                    BufferedOutputStream bos = new BufferedOutputStream(fileOutputStream);
 
-                //choose another format if PNG doesn't suit you
-                newImage.compress(Bitmap.CompressFormat.PNG, 100, bos);
+                    //choose another format if PNG doesn't suit you
+                    newImage.compress(Bitmap.CompressFormat.PNG, 100, bos);
 
-                bos.flush();
-                bos.close();
+                    bos.flush();
+                    bos.close();
 
+                    Toast.makeText(getApplicationContext(),
+                            imageName + " is saved ! ",
+                            Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(),
+                            " Image is not saved ! ",
+                            Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+
+                }
+
+            } else {
                 Toast.makeText(getApplicationContext(),
-                        imageName + " is saved ! " ,
+                        " Please Enter the name of Image to save ",
                         Toast.LENGTH_SHORT).show();
-            } catch (Exception e) {
-                Toast.makeText(getApplicationContext(),
-                         " Image is not saved ! ",
-                        Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-
             }
-
-        }else{
-            Toast.makeText(getApplicationContext(),
-                    " Please Enter the name of Image to save ",
-                    Toast.LENGTH_SHORT).show();
         }
 
         if(v.getId()==R.id.backToImageSelection){
